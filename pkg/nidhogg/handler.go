@@ -212,12 +212,10 @@ func (h *Handler) getDaemonsetPod(nodeName string, ds Daemonset) (*corev1.Pod, e
 }
 
 func podReady(pod *corev1.Pod) bool {
-	for _, status := range pod.Status.ContainerStatuses {
-		if status.Ready == false {
-			return false
-		}
+	if pod.Status.Phase == corev1.PodRunning {
+		return true
 	}
-	return true
+	return false
 }
 
 func addTaint(taints []corev1.Taint, taintName string) []corev1.Taint {
